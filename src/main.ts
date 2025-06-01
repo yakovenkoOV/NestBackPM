@@ -9,6 +9,11 @@ async function bootstrap() {
   const logger = new Logger('bootstrap');
   const dataSource = app.get(DataSource);
 
+  app.enableCors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+  });
+
   try {
     await dataSource.runMigrations();
     logger.log('Migrations successfully run!');

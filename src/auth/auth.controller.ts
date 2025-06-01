@@ -2,13 +2,17 @@ import {
   Controller,
   Post,
   Body,
+  Get,
+  UseGuards,
   HttpCode,
   HttpStatus,
+  Request,
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
+import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -33,5 +37,11 @@ export class AuthController {
     }
 
     return this.authService.login(user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  getProfile(@Request() req) {
+    return req.user;
   }
 }
